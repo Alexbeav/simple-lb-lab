@@ -1,0 +1,26 @@
+# Vagrant environment
+.vagrant/
+
+# Ansible runtime artifacts (if any)
+*.retry
+
+# SSH keys (only if you generate them locally)
+*.pem
+*.key
+
+# System junk
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Node-specific inventory or vars if generated
+inventory/
+
+# Output logs (optional)
+logs/
+*.log

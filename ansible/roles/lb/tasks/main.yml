@@ -1,0 +1,34 @@
+---
+- name: Install HAProxy
+  yum:
+    name: haproxy
+    state: present
+
+- name: Configure HAProxy
+  copy:
+    dest: /etc/haproxy/haproxy.cfg
+    content: |
+      global
+          daemon
+          maxconn 256
+
+      defaults
+          mode http
+          timeout connect 5000ms
+          timeout client 50000ms
+          timeout server 50000ms
+
+      frontend http_front
+          bind *:80
+          default_backend web_back
+
+      backend web_back
+          balance roundrobin
+          server web1 192.168.152.11:80 check
+          server web2 192.168.152.12:80 check
+
+- name: Start and enable HAProxy
+  service:
+    name: haproxy
+    state: started
+    enabled: yes

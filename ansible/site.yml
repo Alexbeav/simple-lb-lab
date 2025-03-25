@@ -1,0 +1,14 @@
+---
+- name: Configure nodes based on role
+  hosts: all
+  become: true
+  tasks:
+    - name: Include web role
+      include_role:
+        name: web
+      when: node_role in ['web1', 'web2']
+
+    - name: Include lb role
+      include_role:
+        name: lb
+      when: node_role == 'lb'

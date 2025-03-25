@@ -1,0 +1,30 @@
+# Vagrantfile
+Vagrant.configure("2") do |config|
+  nodes = [
+    { name: "lb",   ip: "192.168.152.10" },
+    { name: "web1", ip: "192.168.152.11" },
+    { name: "web2", ip: "192.168.152.12" }
+  ]
+
+  config.vm.synced_folder ".", "/vagrant"
+
+  nodes.each do |node|
+    config.vm.define node[:name] do |node_config|
+      node_config.vm.box = "generic/rocky9"
+      node_config.vm.hostname = node[:name]
+      node_config.vm.network "private_network", ip: node[:ip]
+
+      node_config.vm.provider "vmware_desktop" do |v|
+        v.memory = 512
+        v.cpus = 1
+      end
+
+      node_config.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "/vagrant/ansible/site.yml"
+        ansible.extra_vars = {
+          node_role: node[:name]
+        }
+      end
+    end
+  end
+end
