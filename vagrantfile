@@ -1,9 +1,13 @@
 # Vagrantfile
 Vagrant.configure("2") do |config|
+  # Base network
+  base_net = "192.168.100"
+  
+  # Define VMs
   nodes = [
-    { name: "lb",   ip: "192.168.84.10" },
-    { name: "web1", ip: "192.168.84.11" },
-    { name: "web2", ip: "192.168.84.12" }
+    { name: "lb",    offset: 10 },
+    { name: "web1",  offset: 11 },
+    { name: "web2",  offset: 12 }
   ]
 
   config.vm.synced_folder ".", "/vagrant"
